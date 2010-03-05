@@ -1,0 +1,10 @@
+Texture t_tank
+{
+	filename = tank.png
+}
+
+Sprite s_tank
+{
+	texture = t_tank
+	rect = 0, 0, 21, 27
+}
