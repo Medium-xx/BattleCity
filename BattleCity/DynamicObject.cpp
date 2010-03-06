@@ -11,8 +11,24 @@ DynamicObject::~DynamicObject(void)
 {
 }
 
+void DynamicObject::Move(Direction direction){
+	Turn(direction);
+	switch(m_Direction){
+		case UP:
+			SetSpeed(0,1.0);
+			break;
+		case DOWN:
+			SetSpeed(0,-1.0);
+			break;
+		case LEFT:
+			SetSpeed(-1.0,0);
+			break;
+		case RIGHT:
+			SetSpeed(1.0,0);
+	}
+}
+
 void DynamicObject::Update(float fDeltaTime){
-	SetSpeed(m_Speed + (m_Acceleration*fDeltaTime));
 	m_Position = m_Position + (m_Speed*fDeltaTime);
 }
 
@@ -22,5 +38,9 @@ void DynamicObject::SetSpeed(const Vector2d& Speed){
 
 
 void DynamicObject::SetSpeed(float fSpeedX,float fSpeedY){
-	m_Speed = Vector2d(fSpeedX,fSpeedY);
+	m_Speed = Vector2d(m_fMaxSpeed*fSpeedX,m_fMaxSpeed*fSpeedY);
+}
+
+void DynamicObject::Stop(){
+	SetSpeed(0,0);
 }

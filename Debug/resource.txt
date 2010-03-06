@@ -7,4 +7,32 @@ Sprite s_tank
 {
 	texture = t_tank
 	rect = 0, 0, 21, 27
+	hotspot = 11, 14
+}
+
+Texture t_bullet
+{
+	filename = warhead.png
+}
+
+Sprite s_bullet
+{
+	texture = t_bullet
+	rect = 0, 0, 3, 4
+	hotspot = 2,2
+}
+
+Stream theme
+{
+	filename = hotgay.mp3
+}
+
+Sound fire
+{
+	filename = fire.wav
+}
+
+Sound tank_move
+{
+	filename = tank_move.wav
 }

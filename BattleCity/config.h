@@ -16,4 +16,5 @@ typedef Vector2d Point;
 
 
 const double EPS = 1e-6;
-enum Direction{FORWARD,BACKWARD};
+//enum Direction{FORWARD,BACKWARD};
+enum Direction { UP, DOWN, LEFT, RIGHT};

@@ -1,7 +1,16 @@
 #pragma once
+#include "GameObject.h"
+#include "Timer.h"
 
-struct Weapon
+class Weapon:public GameObject
 {
-	float m_ProjectileSpeed;
-	float m_Damage;
+	float m_fProjectileSpeed;
+	float m_fDamage;
+	Timer m_CoolDown;
+
+public:
+	Weapon();
+	bool IsReady();
+	void Reload();
+	inline float ProjectileSpeed()  { return m_fProjectileSpeed; }
 };

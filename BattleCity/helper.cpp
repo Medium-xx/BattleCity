@@ -14,7 +14,7 @@ void PressedKeys::Init(){
 
 PressedKeys::PressedKeys(){
 	for(int i = 0; i < PressedKeys::NUM_KEYS; ++i){
-		if(GameConfiguration::pHGE->Input_KeyDown(PressedKeys::IndexToKey[i]))
+		if(GameConfiguration::pHGE->Input_GetKeyState(PressedKeys::IndexToKey[i]))
 			m_arriPressed[i] = true;
 		else
 			m_arriPressed[i] = false;

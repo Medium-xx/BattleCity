@@ -1,27 +1,33 @@
 #pragma once
 #include "Weapon.h"
-#include "hgesprite.h"
+#include "config.h"
+#include <hgeanim.h>
+#include <hgeresource.h>
+#include "DynamicObject.h"
+#include "Warhead.h"
+#include "Weapon.h"
 
-struct vec2d
-{
-	float x, y;
-};
-
-class Tank
+class Tank: public DynamicObject
 {
 public:
-	Tank(int health = 10, float speed = 1, vec2d pos = {0, 0}, bool team = false, hgeSprite* sprite);
-	~Tank(void);
+	Tank(int health = 10, float fMaxSpeed = 0, Vector2d pos = Vector2d(0,0), bool team = false, hgeSprite* sprite = 0 );
+	virtual ~Tank(void);
 
-	void Draw();
+	virtual void Render();
+	virtual void Move(Direction direction);
+	virtual void Stop();
 	void Promote();
+	WarHead* Fire();
+	
+
 private:
 	int			m_iHealth;
-	float		m_fSpeed;
-	vec2d		m_Position;
 	int			m_iRank;
-	Weapon		m_Weapon;
 	bool		m_bTeam;
+	Weapon		m_Weapon;
+	
+	HEFFECT m_hMoving;
+	HCHANNEL m_hChannel;
 
-	hgeSprite*	m_pSpr;
+	hgeSprite*	m_pSprite;
 };
