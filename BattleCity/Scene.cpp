@@ -16,6 +16,7 @@ Scene::Scene()
 
 Scene::~Scene(void)
 {
+	delete m_pMap;
 }
 
 void Scene::Update(const PressedKeys& pressedKeys){
@@ -36,12 +37,11 @@ void Scene::Update(const PressedKeys& pressedKeys){
 	if(pressedKeys.IsKeyPressed(HGEK_SPACE)){
 		WarHead* x = player.Fire();
 		if(x != NULL)
-			layers[1].push_back(x);
+			dynamic_objects.push_back(x);
 	}
 	
-	for(int i = 0; i < 3; ++i)
-		for(int j = 0; j < layers[i].size(); ++j)
-			layers[i][j]->Update(0.1);
+	for(int i = 0; i < dynamic_objects.size(); ++i)
+		dynamic_objects[i]->Update(0.1);
 
 //	if(GameConfiguration::pHGE->Input_	GetKeyState(keyhold))
 
@@ -50,10 +50,16 @@ void Scene::Update(const PressedKeys& pressedKeys){
 
 }
 
-void Scene::Render(){
-	for(int i = 0; i < 3; ++i){
-		if(i==1) player.Render();
-		for(int j = 0; j < layers[i].size(); ++j)
-			layers[i][j] -> Render();
-	}
+void Scene::Render()
+{
+	m_pMap -> Render(0);
+	player.Render();
+	for(int j = 0; j < dynamic_objects.size(); ++j)
+		dynamic_objects[j] -> Render();
+	m_pMap -> Render(1);
+}
+
+void Scene::LoadMap(const char * filename)
+{
+	m_pMap = new Map(filename);
 }

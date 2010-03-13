@@ -58,6 +58,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int  )
 	
 	GameConfiguration::pResourceManager = new hgeResourceManager("resource.txt");
 	pWorld = new Scene();
+	pWorld->LoadMap ("Map1.txt");
 
 	GameConfiguration::pHGE->System_Start();
 

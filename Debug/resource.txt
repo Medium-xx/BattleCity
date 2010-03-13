@@ -1,26 +1,177 @@
-Texture t_tank
+; Textures
+
+; Player 1
+
+Texture t_player1_up
 {
-	filename = tank.png
+	filename = p1_u.png
 }
 
-Sprite s_tank
+Texture t_player1_down
 {
-	texture = t_tank
-	rect = 0, 0, 21, 27
-	hotspot = 11, 14
+	filename = p1_d.png
 }
 
-Texture t_bullet
+Texture t_player1_left
+{
+	filename = p1_l.png
+}
+
+Texture t_player1_right
+{
+	filename = p1_r.png
+}
+
+; Player 2
+
+Texture t_player2_up
+{
+	filename = p2_u.png
+}
+
+Texture t_player2_down
+{
+	filename = p2_d.png
+}
+
+Texture t_player2_left
+{
+	filename = p2_l.png
+}
+
+Texture t_player2_right
+{
+	filename = p2_r.png
+}
+
+; Debris
+
+Texture t_brick_wall
+{
+	filename = brick_wall.png
+}
+
+Texture t_concerte_wall
+{
+	filename = concerte_wall.png
+}
+
+Texture t_bush
+{
+	filename = bush.png
+}
+
+; Warhead
+
+Texture t_warhead
 {
 	filename = warhead.png
 }
 
+; Sprites
+
+; Player 1
+
+Sprite s_tank
+{
+	texture = t_player1_up
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+Sprite s_player1_up
+{
+	texture = t_player1_up
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+Sprite s_player1_down
+{
+	texture = t_player1_down
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+Sprite s_player1_left
+{
+	texture = t_player1_left
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+Sprite s_player1_right
+{
+	texture = t_player1_right
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+; Player 2
+
+Sprite s_player2_up
+{
+	texture = t_player2_up
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+Sprite s_player2_down
+{
+	texture = t_player2_down
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+Sprite s_player2_left
+{
+	texture = t_player2_left
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+Sprite s_player2_right
+{
+	texture = t_player2_right
+	rect = 0,0,13,13
+	hotspot = 7,7
+}
+
+; Debris
+
+Sprite s_brick_wall
+{
+	texture = t_brick_wall
+	rect = 0,0,8,8
+	hotspot = 0,0
+}
+
+Sprite s_concerte_wall
+{
+	texture = t_concerte_wall
+	rect = 0,0,8,8
+	hotspot = 0,0
+}
+
+Sprite s_bush
+{
+	texture = t_bush
+	rect = 0,0,8,8
+	hotspot = 0,0
+}
+
+; Bullet
+
 Sprite s_bullet
 {
-	texture = t_bullet
+	texture = t_warhead
 	rect = 0, 0, 3, 4
 	hotspot = 2,2
 }
+
+; Animations
+
+; Sounds
 
 Stream theme
 {
