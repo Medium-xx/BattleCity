@@ -203,6 +203,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Map.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MapObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Scene.cpp"
 				>
 			</File>
@@ -253,6 +261,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Map.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MapObject.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Scene.h"
 				>
 			</File>
@@ -278,6 +294,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\Map1.txt"
+				>
+			</File>
 			<File
 				RelativePath="..\Debug\resource.txt"
 				>
