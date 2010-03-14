@@ -211,7 +211,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Rectangle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Scene.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Segment.cpp"
 				>
 			</File>
 			<File
@@ -269,7 +277,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Rectangle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Scene.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Segment.h"
 				>
 			</File>
 			<File
@@ -295,7 +311,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\Map1.txt"
+				RelativePath=".\map2.txt"
 				>
 			</File>
 			<File

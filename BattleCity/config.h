@@ -19,6 +19,6 @@ const double EPS = 1e-6;
 //enum Direction{FORWARD,BACKWARD};
 enum Direction { UP, DOWN, LEFT, RIGHT};
 
-const unsigned int CELLSIZE = 8;
+const unsigned int CELL_SIZE = 8;
 
-#define SAFE_DELETE (a) {if (a != NULL) delete a; a = NULL;}
+#define SAFE_DELETE(a) {if ((a) != NULL) delete (a); (a) = NULL;}

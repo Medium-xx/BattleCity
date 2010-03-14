@@ -1,5 +1,6 @@
 #include "DynamicObject.h"
 #include "GameConfiguration.h"
+#include "Rectangle.h"
 
 DynamicObject::DynamicObject(void)
 {
@@ -15,10 +16,10 @@ void DynamicObject::Move(Direction direction){
 	Turn(direction);
 	switch(m_Direction){
 		case UP:
-			SetSpeed(0,1.0);
+			SetSpeed(0,-1.0);
 			break;
 		case DOWN:
-			SetSpeed(0,-1.0);
+			SetSpeed(0,+1.0);
 			break;
 		case LEFT:
 			SetSpeed(-1.0,0);
@@ -30,6 +31,7 @@ void DynamicObject::Move(Direction direction){
 
 void DynamicObject::Update(float fDeltaTime){
 	m_Position = m_Position + (m_Speed*fDeltaTime);
+	m_Rectangle.Move(m_Speed*fDeltaTime);
 }
 
 void DynamicObject::SetSpeed(const Vector2d& Speed){

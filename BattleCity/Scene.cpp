@@ -8,10 +8,10 @@ Scene::Scene()
 {
 	PressedKeys::Init();
 	GameConfiguration::ScreenCenter = Point(400,400);
-	HSTREAM ch;
+	//HSTREAM ch;
 	//ch = GameConfiguration::pHGE->Stream_Play(pResourceManager->GetStream("theme"),true);
 	//GameConfiguration::pHGE->Stream_Free(ch);
-	player = Tank(10,30.0,Vector2d(100,100),false,GameConfiguration::pResourceManager->GetSprite("s_tank"));
+	player = Tank(10,30.0,Vector2d(100,100),false,UP);
 }
 
 Scene::~Scene(void)
@@ -20,7 +20,8 @@ Scene::~Scene(void)
 }
 
 void Scene::Update(const PressedKeys& pressedKeys){
-//	static
+
+	const Point& player_position = player.GetPosition();
 	int keyhold = 0;
 	if(pressedKeys.IsKeyPressed(HGEK_UP)&&(keyhold = HGEK_UP))
 		player.Move(UP);		    			
@@ -31,22 +32,37 @@ void Scene::Update(const PressedKeys& pressedKeys){
 	if(pressedKeys.IsKeyPressed(HGEK_RIGHT)&&(keyhold = HGEK_RIGHT))
 		player.Move(RIGHT);
 
+
 	if(!keyhold)
 		player.Stop();
 
 	if(pressedKeys.IsKeyPressed(HGEK_SPACE)){
 		WarHead* x = player.Fire();
 		if(x != NULL)
-			dynamic_objects.push_back(x);
+			m_vecpWarHeads.push_back(x);
 	}
 	
-	for(int i = 0; i < dynamic_objects.size(); ++i)
-		dynamic_objects[i]->Update(0.1);
+	std::vector<WarHead*> warheads;
+	for(int i = 0; i < (int)m_vecpWarHeads.size(); ++i)
+ 		if(m_pMap->CheckAndDestroy(*m_vecpWarHeads[i])){
+			SAFE_DELETE(m_vecpWarHeads[i]);
+		}
+		else
+			warheads.push_back(m_vecpWarHeads[i]);
+
+	m_vecpWarHeads = warheads;
+	
+	for(int i = 0; i < (int)m_vecpWarHeads.size(); ++i)
+		m_vecpWarHeads[i]->Update(0.1f);
 
 //	if(GameConfiguration::pHGE->Input_	GetKeyState(keyhold))
 
 
 	player.Update(0.1f);
+
+
+	if(!m_pMap->CanPlace(player))
+		player.SetPosition(player_position);
 
 }
 
@@ -54,12 +70,13 @@ void Scene::Render()
 {
 	m_pMap -> Render(0);
 	player.Render();
-	for(int j = 0; j < dynamic_objects.size(); ++j)
-		dynamic_objects[j] -> Render();
+	for(int j = 0; j < (int)m_vecpWarHeads.size(); ++j)
+		m_vecpWarHeads[j] -> Render();
 	m_pMap -> Render(1);
 }
 
-void Scene::LoadMap(const char * filename)
+void Scene::LoadMap(const char * filename,int x0,int y0)
 {
-	m_pMap = new Map(filename);
+	m_pMap = new Map(filename,x0,y0);
+	player.SetPosition(m_pMap->GetPlayer1SpawnPosition());
 }
