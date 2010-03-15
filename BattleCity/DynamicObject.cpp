@@ -6,15 +6,16 @@ DynamicObject::DynamicObject(void)
 {
 	m_Speed = Vector2d(0,0);
 	m_Acceleration = Vector2d(0,0);
+	m_State = IDLE;
 }
 
 DynamicObject::~DynamicObject(void)
 {
 }
 
-void DynamicObject::Move(Direction direction){
-	Turn(direction);
-	switch(m_Direction){
+void DynamicObject::SetSpeedDirection(Direction direction)
+{
+	switch(direction){
 		case UP:
 			SetSpeed(0,-1.0);
 			break;
@@ -27,6 +28,13 @@ void DynamicObject::Move(Direction direction){
 		case RIGHT:
 			SetSpeed(1.0,0);
 	}
+}
+
+void DynamicObject::Move(Direction direction){
+	Turn(direction);
+	SetSpeedDirection(direction);
+	m_State = MOVING;
+	this->Update(GameConfiguration::fDeltaTime);
 }
 
 void DynamicObject::Update(float fDeltaTime){
@@ -45,4 +53,11 @@ void DynamicObject::SetSpeed(float fSpeedX,float fSpeedY){
 
 void DynamicObject::Stop(){
 	SetSpeed(0,0);
+	m_State = IDLE;
 }
+
+bool DynamicObject::HeadLineIntersects(const DynamicObject& other)
+{
+	return	other.GetRectangle().IntersectsSegment(this->GetHeadSegment());
+}
+							

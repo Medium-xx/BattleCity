@@ -68,6 +68,13 @@ Texture t_warhead
 	filename = warhead.png
 }
 
+; Explosion
+
+Texture t_tank_explosion
+{
+	filename = explosion.png
+}
+
 ; Sprites
 
 ; Player 1
@@ -186,4 +193,13 @@ Sound fire
 Sound tank_move
 {
 	filename = tank_move.wav
+}
+
+Animation a_tank_explosion
+{
+	texture = t_tank_explosion
+	rect = 0, 0, 32, 20
+	hotspot = 0,10
+	frames = 12
+	fps = 24.0
 }

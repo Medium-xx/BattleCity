@@ -3,14 +3,14 @@
 #include "Segment.h"
 
 
-class WarHead:public DynamicObject
+class Warhead:public DynamicObject
 {
 private:
 	hgeSprite* m_pSprite;
 	Point m_HitPoint;
 public:
-	WarHead(Point pos,Direction direction,float fSpeed, hgeSprite* spr = NULL);
-	~WarHead(void);
+	Warhead(Point pos,Direction direction,float fSpeed, hgeSprite* spr = NULL, TEAM_ID = PLAYERS);
+	~Warhead(void);
 	void SetSprite(hgeSprite* pSpr) { m_pSprite = pSpr; }
 	Point GetHitPoint();
 	virtual void Render();

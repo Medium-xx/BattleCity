@@ -11,7 +11,7 @@ public:
 	{
 		debris['#'] = new MapObject(Vector2d(0,0), GameConfiguration::pResourceManager->GetSprite("s_brick_wall"),0);
 		debris['*'] = new MapObject(Vector2d(0,0), GameConfiguration::pResourceManager->GetSprite("s_bush"),1);
-		debris['.'] = debris['+'] = new MapObject(Vector2d(0,0), NULL,0);
+		debris['.'] = debris['+'] = debris['$'] = new MapObject(Vector2d(0,0), NULL,0);
 	};
 	~MapBuilder()
 	{
@@ -54,6 +54,11 @@ Map::Map(const char* filename,int x0,int y0)
 				m_Player1Spawn = Point(CELL_SIZE*(j+1.0f),CELL_SIZE*(i+1.0f));
 				m_field[i][j] = '.';
 			}
+			if(m_field[i][j] == '$')
+			{
+				m_vecBotSpawns.push_back(Point(CELL_SIZE*(j+1.0f),CELL_SIZE*(i+1.0f)));
+				m_field[i][j] = '.';
+			}
 		}
 	}
 }
@@ -75,7 +80,7 @@ void Map::Render(UINT layer)
 
 bool Map::CanPlace(const Tank& tank){
 	const Geometry::Segment head_segment = tank.GetHeadSegment();
-	return !this->HasCollisions(head_segment);
+	return !this->OutOfBounds(head_segment) && !this->HasCollisions(head_segment);
 	//int di = 
 	/*	return IsEmpty(rect.m_A.x,rect.m_A.y)&&
 			IsEmpty(rect.m_A.x,rect.m_B.y)&&
@@ -90,11 +95,17 @@ bool Map::IsEmpty(float x0,float y0){
 	return m_field[i][j] != '#';
 }
 
-bool Map::CheckAndDestroy(const WarHead& X){
+bool Map::CheckAndDestroy(const Warhead& X){
 	Geometry::Segment head_segment = X.GetHeadSegment();
+
+	if(OutOfBounds(head_segment))
+		return true;
+
+
 	if(!HasCollisions(head_segment))
 		return false;
-	
+
+
 	Destroy(head_segment);
 	return true;
 }
@@ -105,8 +116,11 @@ std::pair<int,int> GetIndeces(Point A){
 
 bool Map::HasCollisions(const Geometry::Segment &seg){
 	typedef std::pair<int,int> pii;
-	pii ind1 = GetIndeces(seg.m_A);
-	pii ind2 = GetIndeces(seg.m_B);
+	pii ind1 = GetIndeces(seg.A);
+	pii ind2 = GetIndeces(seg.B);
+
+	//if(ind2.first<0 || ind2.second>m_fSizeX) return true;
+	//if(ind2.first<0 || ind2.second>m_fSizeX) return true;
 
 	int di = ind2.first - ind1.first > 0 ? 1:0;
 	int dj = ind2.second - ind1.second > 0 ? 1:0;
@@ -135,8 +149,8 @@ bool Map::HasCollisions(const Geometry::Segment &seg){
 
 void Map::Destroy(Geometry::Segment& seg){
 	typedef std::pair<int,int> pii;
-	pii ind1 = GetIndeces(seg.m_A);
-	pii ind2 = GetIndeces(seg.m_B);
+	pii ind1 = GetIndeces(seg.A);
+	pii ind2 = GetIndeces(seg.B);
 
 	int di = ind2.first - ind1.first > 0 ? 1:0;
 	int dj = ind2.second - ind1.second > 0 ? 1:0;
@@ -161,4 +175,12 @@ void Map::DestroyCell(int i,int j){
 		m_field[i][j] = '.';
 		SAFE_DELETE(data[i][j]);
 	}
+}
+
+bool Map::OutOfBounds(const Geometry::Segment& seg) const
+{
+	std::pair<int,int> ind1 = GetIndeces(seg.A);
+	std::pair<int,int> ind2 = GetIndeces(seg.B);
+
+	return !(ind1.first>=0&&ind2.first<m_iSizeY && ind1.second>=0 && ind2.second<m_iSizeX);
 }

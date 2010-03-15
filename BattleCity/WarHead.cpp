@@ -1,16 +1,22 @@
 #include "WarHead.h"
 #include "GameConfiguration.h"
+#include "Rectangle.h"
+#include "helper.h"
 
-WarHead::~WarHead(void)
+Warhead::~Warhead(void)
 {
 }
 
-WarHead::WarHead(Point pos,Direction direction,float fSpeed, hgeSprite* spr):DynamicObject(pos,fSpeed,direction),m_pSprite(spr) 
+Warhead::Warhead(Point pos,Direction direction,float fSpeed, hgeSprite* spr,TEAM_ID team):DynamicObject(pos,fSpeed,direction),m_pSprite(spr) 
 { 
-	this->Move(direction); 
+	m_TeamId = team;
+	hgeRect a;
+	m_Rectangle = Geometry::Rectangle(*(spr->GetBoundingBoxEx(m_Position.x,m_Position.y,DirectionToAngle(direction),1.0,1.0,&a)));
+	this->Turn(direction); 
+	this->SetSpeedDirection(direction);
 }
 
-Point WarHead::GetHitPoint(){
+Point Warhead::GetHitPoint(){
 	float height2 = m_pSprite->GetHeight()/2.0f;
 	switch(m_Direction){
 		case UP:
@@ -25,7 +31,7 @@ Point WarHead::GetHitPoint(){
 	return Point(0,0);
 }
 
-void WarHead::Render(){
+void Warhead::Render(){
 	float angle;
 	switch(m_Direction){
 		case UP:  
@@ -45,7 +51,7 @@ void WarHead::Render(){
 	m_pSprite->RenderEx(m_Position.x,m_Position.y,angle);
 }
 
-Geometry::Segment WarHead::GetHeadSegment() const{
+Geometry::Segment Warhead::GetHeadSegment() const{
 	//float height2 = m_pSprite->GetHeight()/2.0f;
 	float width2 = m_pSprite->GetWidth()/2.0f+2.0f;
 

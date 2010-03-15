@@ -1,9 +1,10 @@
 #include "Tank.h"
 #include "GameConfiguration.h"
 
-Tank::Tank(int health, float fMaxSpeed,Vector2d pos, bool team, Direction direction):DynamicObject(pos,fMaxSpeed), m_iHealth(health),m_bTeam(team)
+Tank::Tank(int health, float fMaxSpeed,Vector2d pos, TEAM_ID team, Direction direction,ActionController* pActionController):DynamicObject(pos,fMaxSpeed), m_iHealth(health),																											m_pActionController(pActionController)
 {
-	m_hMoving = GameConfiguration::pResourceManager->GetEffect("tank_move");
+//	m_hMoving = GameConfiguration::pResourceManager->GetEffect("tank_move");
+	m_TeamId = team;
 	m_arrpTurnSprites[DOWN] = GameConfiguration::pResourceManager->GetSprite("s_player1_down");
 	m_arrpTurnSprites[UP] = GameConfiguration::pResourceManager->GetSprite("s_player1_up");
 	m_arrpTurnSprites[LEFT] = GameConfiguration::pResourceManager->GetSprite("s_player1_left");
@@ -17,6 +18,7 @@ Tank::Tank(int health, float fMaxSpeed,Vector2d pos, bool team, Direction direct
 
 Tank::~Tank(void)
 {
+	SAFE_DELETE(m_pActionController);
 }
 
 void Tank::Render(){
@@ -31,57 +33,64 @@ void Tank::Render(){
 		m_vecEffects[i]->Render();
 		delete m_vecEffects[i];
 	}
-	
+
 	m_vecEffects.clear();
 }
 
-WarHead* Tank::Fire(){	
+Warhead* Tank::Fire(){	
 	if(!m_Weapon.IsReady())
 		return NULL;
 	m_Weapon.Reload();
 
-	m_vecEffects.push_back(new SoundEffect("fire"));
 
 	Point pos;
 	switch(m_Direction){
 		case UP:
-			pos = Point(m_Position.x,m_Rectangle.m_A.y);
+			pos = Point(m_Position.x,m_Rectangle.y1);
 			break;
 		case DOWN:
-			pos = Point(m_Position.x,m_Rectangle.m_B.y);
+			pos = Point(m_Position.x,m_Rectangle.y2);
 			break;
 		case LEFT:
-			pos = Point(m_Rectangle.m_A.x,m_Position.y);
+			pos = Point(m_Rectangle.x1,m_Position.y);
 			break;
 		case RIGHT:
-			pos = Point(m_Rectangle.m_B.x,m_Position.y);
+			pos = Point(m_Rectangle.x2,m_Position.y);
 	}
-	WarHead* ret = new WarHead(pos,m_Direction,m_Weapon.ProjectileSpeed(),GameConfiguration::pResourceManager->GetSprite("s_bullet"));
+	Warhead* ret = new Warhead(pos,m_Direction,m_Weapon.ProjectileSpeed(),GameConfiguration::pResourceManager->GetSprite("s_bullet"),GetTeamId());
 	return ret;	
 }
 
+/*
 void Tank::Move(Direction direction){
 	DynamicObject::Move(direction);
-	if(!GameConfiguration::pHGE->Channel_IsPlaying(m_hChannel))
-		m_hChannel = GameConfiguration::pHGE->Effect_Play(m_hMoving);	
+//	if(!GameConfiguration::pHGE->Channel_IsPlaying(m_hChannel))
+//		m_hChannel = GameConfiguration::pHGE->Effect_Play(m_hMoving);	
 }
+*/
 
+/*
 void Tank::Stop(){
 	DynamicObject::Stop();
-//	if(GameConfiguration::pHGE->Channel_IsPlaying(m_hChannel))
-		GameConfiguration::pHGE->Channel_Stop(m_hChannel);
+	//	if(GameConfiguration::pHGE->Channel_IsPlaying(m_hChannel))
+	GameConfiguration::pHGE->Channel_Stop(m_hChannel);
 }
+*/
 
 Geometry::Segment Tank::GetHeadSegment() const{
 	switch(m_Direction){
 		case UP:
-			return Geometry::Segment(m_Rectangle.m_A,Point(m_Rectangle.m_B.x,m_Rectangle.m_A.y));
+			return Geometry::Segment(Point(m_Rectangle.x1,m_Rectangle.y1),Point(m_Rectangle.x2,m_Rectangle.y1));
 		case DOWN:
-			return Geometry::Segment(Point(m_Rectangle.m_A.x,m_Rectangle.m_B.y),m_Rectangle.m_B);
+			return Geometry::Segment(Point(m_Rectangle.x1,m_Rectangle.y2),Point(m_Rectangle.x2,m_Rectangle.y2));
 		case RIGHT:
-			return Geometry::Segment(Point(m_Rectangle.m_B.x,m_Rectangle.m_A.y),m_Rectangle.m_B);
+			return Geometry::Segment(Point(m_Rectangle.x2,m_Rectangle.y1),Point(m_Rectangle.x2,m_Rectangle.y2));
 		case LEFT:
-			return Geometry::Segment(m_Rectangle.m_A,Point(m_Rectangle.m_A.x,m_Rectangle.m_B.y));
+			return Geometry::Segment(Point(m_Rectangle.x1,m_Rectangle.y1),Point(m_Rectangle.x1,m_Rectangle.y2));
 	}
 	return Geometry::Segment();
+}
+
+void Tank::PerformAction(){
+	m_pActionController->PerformAction(*this);
 }

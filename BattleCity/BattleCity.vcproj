@@ -179,11 +179,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\DynamicObject.cpp"
+				RelativePath=".\ActionController.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Effect.cpp"
+				RelativePath=".\ActionPerformer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DynamicObject.cpp"
 				>
 			</File>
 			<File
@@ -223,6 +227,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SoundManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Tank.cpp"
 				>
 			</File>
@@ -245,15 +253,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\ActionController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ActionPerformer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\config.h"
 				>
 			</File>
 			<File
 				RelativePath=".\DynamicObject.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Effect.h"
 				>
 			</File>
 			<File
@@ -286,6 +298,10 @@
 			</File>
 			<File
 				RelativePath=".\Segment.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SoundManager.h"
 				>
 			</File>
 			<File

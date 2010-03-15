@@ -1,11 +1,11 @@
 #include "config.h"
 #include "GameConfiguration.h"
 #include "Scene.h"
+#include "SoundManager.h"
 
 
 
 hgeResourceManager	*pResourceManager = NULL;
-Scene* pWorld = NULL;
 //hgeAnimation		player_anim;
 
 bool FrameFunc()
@@ -14,7 +14,12 @@ bool FrameFunc()
 	//	if (GameConfiguration::pHGE->Input_KeyDown(HGEK_UP))
 	//	if (GameConfiguration::pHGE->Input_GetKeyState(HGEK_RIGHT));
 	//	player_anim->Update(GameConfiguration::pHGE->Timer_GetDelta());
-	pWorld->Update(PressedKeys());
+	if(GameConfiguration::pHGE->Input_GetKeyState(HGEK_ESCAPE))
+		return true;
+
+	GameConfiguration::pKeyboardManager->Listen();
+
+	GameConfiguration::pWorld->Update();
 	return false;
 };
 
@@ -25,7 +30,7 @@ bool RenderFunc()
 	
 
 	//	player_anim->Render(static_cast<int>(x),400 - static_cast<int>(y));
-	pWorld->Render();
+	GameConfiguration::pWorld->Render();
 //	hgeSprite* x = pResourceManager->GetSprite("s_tank");
 //	x->Render(110,110);
 	//hgeSprite(hgeGetTexture)
@@ -36,15 +41,15 @@ bool RenderFunc()
 };
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int  )
-{
+{	
 	GameConfiguration::pHGE = hgeCreate(HGE_VERSION);
 	GameConfiguration::pHGE->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	GameConfiguration::pHGE->System_SetState(HGE_RENDERFUNC, RenderFunc);
 	GameConfiguration::pHGE->System_SetState(HGE_TITLE, "[:]<><><>[:]");
 	GameConfiguration::pHGE->System_SetState(HGE_FPS, 24);
 	GameConfiguration::pHGE->System_SetState(HGE_WINDOWED, true);
-	GameConfiguration::pHGE->System_SetState(HGE_SCREENWIDTH, GameConfiguration::ScreenWidth);
-	GameConfiguration::pHGE->System_SetState(HGE_SCREENHEIGHT, GameConfiguration::ScreenHeight);
+	GameConfiguration::pHGE->System_SetState(HGE_SCREENWIDTH, GameConfiguration::SCREEN_WIDTH);
+	GameConfiguration::pHGE->System_SetState(HGE_SCREENHEIGHT, GameConfiguration::SCREEN_HEIGHT);
 	GameConfiguration::pHGE->System_SetState(HGE_SCREENBPP, 32);
 	GameConfiguration::pHGE->System_SetState(HGE_SHOWSPLASH, false);
 
@@ -57,8 +62,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int  )
 
 	
 	GameConfiguration::pResourceManager = new hgeResourceManager("resource.txt");
-	pWorld = new Scene();
-	pWorld->LoadMap ("map2.txt",0,0);
+	GameConfiguration::pWorld = new Scene();
+	GameConfiguration::pWorld->LoadMap ("map2.txt",0,0);
+	GameConfiguration::pSoundManager = new SoundManager();
 
 	GameConfiguration::pHGE->System_Start();
 

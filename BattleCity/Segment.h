@@ -6,9 +6,9 @@ namespace Geometry{
 class Segment
 {
 public:
-	Point m_A,m_B;
+	Point A,B;
 
-	Segment(const Point& A,const Point& B):m_A(A),m_B(B){}
+	Segment(const Point& A,const Point& B):A(A),B(B){}
 
 	Segment(void);
 	~Segment(void);
